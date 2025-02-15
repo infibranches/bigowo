@@ -16,14 +16,19 @@ services:
       - ./docker/envoy/envoy.yaml:/etc/envoy/envoy.yaml
     restart: on-failure
     networks:
-      - bigcapital_network
+      - dokploy-network
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.frontend-app.rule=Host(`fintest.rhemachapelagege.org`)
+      - traefik.http.routers.frontend-app.entrypoints=web
+      - traefik.http.services.frontend-app.loadbalancer.server.port=8000
 
   webapp:
     container_name: bigcapital-webapp
     image: swiftadev/webapp:latest
     restart: on-failure
     networks:
-      - bigcapital_network
+      - dokploy-network
 
   server:
     container_name: bigcapital-server
@@ -40,7 +45,7 @@ services:
       - redis
     restart: on-failure
     networks:
-      - bigcapital_network
+      - dokploy-network
     environment:
       # Mail
       - MAIL_HOST=${MAIL_HOST}
@@ -140,7 +145,7 @@ services:
     depends_on:
       - mysql
     networks:
-      - bigcapital_network
+      - dokploy-network
 
   mysql:
     container_name: bigcapital-mysql
@@ -157,7 +162,7 @@ services:
     expose:
       - '3306'
     networks:
-      - bigcapital_network
+      - dokploy-network
 
   mongo:
     container_name: bigcapital-mongo
@@ -168,7 +173,7 @@ services:
     volumes:
       - mongo:/var/lib/mongodb
     networks:
-      - bigcapital_network
+      - dokploy-network
 
   redis:
     container_name: bigcapital-redis
@@ -180,14 +185,14 @@ services:
     volumes:
       - redis:/data
     networks:
-      - bigcapital_network
+      - dokploy-network
 
   gotenberg:
     image: gotenberg/gotenberg:7
     expose:
       - '9000'
     networks:
-      - bigcapital_network
+      - dokploy-network
 
 # Volumes
 volumes:
@@ -205,5 +210,5 @@ volumes:
 
 # Networks
 networks:
-  bigcapital_network:
-    driver: bridge
+  dokploy-network:
+    external: true
