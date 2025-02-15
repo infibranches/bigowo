@@ -20,7 +20,7 @@ services:
 
   webapp:
     container_name: bigcapital-webapp
-    image: bigcapitalhq/webapp:latest
+    image: swiftadev/webapp:latest
     restart: on-failure
     networks:
       - bigcapital_network
