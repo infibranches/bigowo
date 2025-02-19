@@ -19,19 +19,24 @@ services:
       - dokploy-network
     labels:
       - traefik.enable=true
-      - traefik.http.routers.frontend-app.rule=Host(`fintest.rhemachapelagege.org`)
-      - traefik.http.routers.frontend-app.entrypoints=web
-      - traefik.http.services.frontend-app.loadbalancer.server.port=8000
+      - traefik.http.routers.proxy.rule=Host(`fintest.rhemachapelagege.org`)
+      - traefik.http.routers.proxy.entrypoints=web
+      - traefik.http.services.proxy.loadbalancer.server.port=8000
 
   webapp:
-    container_name: bigcapital-webapp
+    # container_name: bigcapital-webapp
     image: swiftadev/webapp:latest
     restart: on-failure
     networks:
       - dokploy-network
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.web-app.rule=Host(`fintest.rhemachapelagege.org`)
+      - traefik.http.routers.web-app.entrypoints=web
+      - traefik.http.services.web-app.loadbalancer.server.port=80
 
   server:
-    container_name: bigcapital-server
+    # container_name: bigcapital-server
     image: bigcapitalhq/server:latest
     expose:
       - '3000'
@@ -129,7 +134,7 @@ services:
       - S3_BUCKET=${S3_BUCKET}
 
   database_migration:
-    container_name: bigcapital-database-migration
+    # container_name: bigcapital-database-migration
     build:
       context: ./
       dockerfile: docker/migration/Dockerfile
@@ -148,7 +153,7 @@ services:
       - dokploy-network
 
   mysql:
-    container_name: bigcapital-mysql
+    # container_name: bigcapital-mysql
     restart: on-failure
     build:
       context: ./docker/mariadb
@@ -165,7 +170,7 @@ services:
       - dokploy-network
 
   mongo:
-    container_name: bigcapital-mongo
+    # container_name: bigcapital-mongo
     restart: on-failure
     build: ./docker/mongo
     expose:
@@ -176,7 +181,7 @@ services:
       - dokploy-network
 
   redis:
-    container_name: bigcapital-redis
+    # container_name: bigcapital-redis
     restart: on-failure
     build:
       context: ./docker/redis
