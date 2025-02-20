@@ -16,7 +16,7 @@ services:
       - 8443
     tty: true
     volumes:
-      - ../files/docker/envoy/envoy.yaml:/etc/envoy/envoy.yaml
+      - ./docker/envoy/envoy.yaml:/etc/envoy/envoy.yaml
     restart: on-failure
     networks:
       - dokploy-network
