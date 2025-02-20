@@ -8,20 +8,23 @@ services:
     depends_on:
       - server
       - webapp
-    ports:
-      - '${PUBLIC_PROXY_PORT:-8000}:8000'
-      - '${PUBLIC_PROXY_SSL_PORT:-8443}:8443'
+    # ports:
+    #   - '${PUBLIC_PROXY_PORT:-8000}:8000'
+    #   - '${PUBLIC_PROXY_SSL_PORT:-8443}:8443'
+    expose:
+      - 8000
+      - 8443
     tty: true
     volumes:
-      - ./docker/envoy/envoy.yaml:/etc/envoy/envoy.yaml
+      - ../files/docker/envoy/envoy.yaml:/etc/envoy/envoy.yaml
     restart: on-failure
     networks:
       - dokploy-network
     labels:
       - traefik.enable=true
-      - traefik.http.routers.proxy.rule=Host(`fintest.rhemachapelagege.org`)
-      - traefik.http.routers.proxy.entrypoints=web
-      - traefik.http.services.proxy.loadbalancer.server.port=8000
+      - traefik.http.routers.test-acc-dmu8gw.rule=Host(`fintest.rhemachapelagege.org`)
+      - traefik.http.routers.test-acc-dmu8gw.entrypoints=web
+      - traefik.http.services.test-acc-dmu8gw.loadbalancer.server.port=8000
 
   webapp:
     # container_name: bigcapital-webapp
@@ -29,11 +32,6 @@ services:
     restart: on-failure
     networks:
       - dokploy-network
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.web-app.rule=Host(`fintest.rhemachapelagege.org`)
-      - traefik.http.routers.web-app.entrypoints=web
-      - traefik.http.services.web-app.loadbalancer.server.port=80
 
   server:
     # container_name: bigcapital-server
@@ -163,7 +161,7 @@ services:
       - MYSQL_PASSWORD=${DB_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
     volumes:
-      - mysql:/var/lib/mysql
+      - ../files/mysql:/var/lib/mysql
     expose:
       - '3306'
     networks:
@@ -176,7 +174,7 @@ services:
     expose:
       - '27017'
     volumes:
-      - mongo:/var/lib/mongodb
+      - ../files/mongo:/var/lib/mongodb
     networks:
       - dokploy-network
 
@@ -188,7 +186,7 @@ services:
     expose:
       - '6379'
     volumes:
-      - redis:/data
+      - ../files/redis:/data
     networks:
       - dokploy-network
 
