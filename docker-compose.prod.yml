@@ -22,9 +22,9 @@ services:
       - dokploy-network
     labels:
       - traefik.enable=true
-      - traefik.http.routers.test-acc-dmu8gw.rule=Host(`fintest.rhemachapelagege.org`)
-      - traefik.http.routers.test-acc-dmu8gw.entrypoints=web
-      - traefik.http.services.test-acc-dmu8gw.loadbalancer.server.port=8000
+      - traefik.http.routers.proxy.rule=Host(`fintest.rhemachapelagege.org`)
+      - traefik.http.routers.proxy.entrypoints=web
+      - traefik.http.services.proxy.loadbalancer.server.port=8000
 
   webapp:
     # container_name: bigcapital-webapp
