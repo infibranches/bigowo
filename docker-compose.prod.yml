@@ -27,12 +27,6 @@ services:
     restart: on-failure
     networks:
       - dokploy-network
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.webapp.rule=Host(`fintest.rhemachapelagege.org`)
-      - traefik.http.routers.webapp.entrypoints=web
-      - traefik.http.services.webapp.loadbalancer.server.port=80
-      - traefik.http.routers.webapp.service=webapp
 
   server:
     # container_name: bigcapital-server
