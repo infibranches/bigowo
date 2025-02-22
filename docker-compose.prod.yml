@@ -25,6 +25,7 @@ services:
       - traefik.http.routers.proxy.rule=Host(`fintest.rhemachapelagege.org`)
       - traefik.http.routers.proxy.entrypoints=web
       - traefik.http.services.proxy.loadbalancer.server.port=8000
+      - traefik.http.routers.proxy.service=proxy
 
   webapp:
     # container_name: bigcapital-webapp
